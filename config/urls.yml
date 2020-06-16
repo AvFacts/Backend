@@ -1,0 +1,16 @@
+development:
+  http_host: "localhost:5000"
+  https: false
+  frontend_url: "http://localhost:5100"
+cypress:
+  http_host: "localhost:5000"
+  https: false
+  frontend_url: "http://localhost:5100"
+test:
+  http_host: app.test.host
+  https: false
+  frontend_url: "http://test.host"
+production:
+  http_host: app.avfacts.org
+  https: true
+  frontend_url: "https://avfacts.org"

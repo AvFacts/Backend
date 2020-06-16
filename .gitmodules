@@ -1,0 +1,3 @@
+[submodule "channel"]
+	path = channel
+	url = https://github.com/AvFacts/channel.git

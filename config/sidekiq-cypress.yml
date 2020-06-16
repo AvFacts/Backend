@@ -1,0 +1,9 @@
+---
+:concurrency: 5
+:pidfile: tmp/pids/sidekiq.pid
+production:
+  :concurrency: 20
+:queues:
+- avfacts_cypress_default
+- avfacts_cypress_active_storage_analysis
+- avfacts_cypress_active_storage_purge
