@@ -47,7 +47,7 @@ RSpec.describe '/episodes', type: :request do
 
         it "should paginate" do
           get '/episodes.json'
-          expect(response.headers['X-Next-Page']).to eq('http://www.example.com/episodes.json?before=6')
+          expect(response.headers['X-Next-Page']).to eq('/episodes.json?before=6')
           json = JSON.parse(response.body)
           expect(json.map { |j| j['number'] }).
               to eq(@episodes.map(&:number).sort.reverse[0, 10])
