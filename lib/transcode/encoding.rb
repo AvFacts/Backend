@@ -59,7 +59,7 @@ class Transcode::Encoding
   #   the leading period.
 
   def extension
-    '.' + format
+    ".#{format}"
   end
 
   # @return [Mime::Type] The MIME type instance associated with the transcoded

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.7.2'
+ruby '3.0'
 
 # FRAMEWORK
 gem 'bootsnap'
@@ -49,12 +49,12 @@ group :development do
   gem 'bugsnag-capistrano', require: false
   gem 'capistrano', require: false
   gem 'capistrano-bundler', require: false
+  gem 'capistrano-git-with-submodules', require: false
   gem 'capistrano-nvm', require: false
   gem 'capistrano-passenger', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
-  gem 'capistrano-git-with-submodules', require: false
 end
 
 group :test do

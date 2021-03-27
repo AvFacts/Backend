@@ -70,7 +70,7 @@ class Transcode
   #   hosted by the content delivery network.
 
   def public_cdn_url(**options)
-    url = URI.parse(service.public_url(key))
+    url = URI.parse(service.send(:public_url, key, filename: filename))
     url.host = Rails.application.config.x.cloudfront[:domain] if Rails.application.config.x.cloudfront[:domain]
     return url.to_s
   rescue NotImplementedError
