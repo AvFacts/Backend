@@ -18,5 +18,5 @@ class User < ApplicationRecord
             uniqueness: true,
             length:     {maximum: 50}
 
-  def jwt_subject() username end
+  def jwt_subject = username
 end

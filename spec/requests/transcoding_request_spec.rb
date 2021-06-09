@@ -13,13 +13,13 @@ RSpec.describe 'transcoding', type: :request do
       parts       = signed_path.split('/')
       get "/rails/active_storage/transcoded/#{parts[6]}/#{parts[7]}/#{parts[8]}"
       expect(response.headers['Location']).
-        to match(/^http:\/\/www\.example\.com\/rails\/active_storage\/disk\/.+\/audio\.mp3$/)
+          to match(/^http:\/\/www\.example\.com\/rails\/active_storage\/disk\/.+\/audio\.mp3$/)
     end
 
     it "should render a 404 for an unknown blob" do
       blob = ActiveStorage.verifier.generate('hello', purpose: :blob_id)
       get "/rails/active_storage/transcoded/#{blob}/world/foo.txt"
-      expect(response.status).to eql(404)
+      expect(response.status).to be(404)
     end
   end
 end

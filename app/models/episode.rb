@@ -145,7 +145,7 @@ class Episode < ApplicationRecord
   end
 
   # @private
-  def to_param() number.to_s end
+  def to_param = number.to_s
 
   # This method prepares an episode for release, or updates associated assets
   # post-release. It does the following:

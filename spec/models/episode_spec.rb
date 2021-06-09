@@ -63,7 +63,7 @@ RSpec.describe Episode, type: :model do
       expect(episode.thumbnail_image).to be_kind_of(ActiveStorage::VariantWithRecord)
       expect(episode.thumbnail_image.blob).to eq(episode.image.blob)
       expect(episode.thumbnail_image.variation.transformations).
-        to eq(format: 'jpeg', resize_to_fill: [200, 200])
+          to eq(format: 'jpeg', resize_to_fill: [200, 200])
     end
 
     it "should return nil if the image is nil" do

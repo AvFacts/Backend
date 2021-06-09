@@ -166,9 +166,9 @@ module AddRangeQueriesToDiskController
 
   private
 
-  RANGE_ELEMENT       = /\d+-\d*/.freeze
-  RANGE_ELEMENT_PARSE = /(\d+)-(\d*)/.freeze
-  RANGE_HEADER        = /^(\w+)=((?:#{RANGE_ELEMENT},\s*)*#{RANGE_ELEMENT})$/.freeze
+  RANGE_ELEMENT       = /\d+-\d*/
+  RANGE_ELEMENT_PARSE = /(\d+)-(\d*)/
+  RANGE_HEADER        = /^(\w+)=((?:#{RANGE_ELEMENT},\s*)*#{RANGE_ELEMENT})$/
   private_constant :RANGE_ELEMENT, :RANGE_ELEMENT_PARSE, :RANGE_HEADER
 
   def parse_ranges(header)
