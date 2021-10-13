@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :episode do
     transient do
-      audio { Rails.root.join('spec', 'fixtures', 'audio.aif') }
-      image { Rails.root.join('spec', 'fixtures', 'image.jpg') }
+      audio { Rails.root.join('spec', 'fixtures', 'files', 'audio.aif') }
+      image { Rails.root.join('spec', 'fixtures', 'files', 'image.jpg') }
     end
 
     title { FFaker::CheesyLingo.title }

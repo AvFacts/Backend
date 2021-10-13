@@ -13,6 +13,8 @@ set :deploy_to, '/var/www/app.avfacts.org'
 
 append :linked_files, 'config/master.key'
 
+set :default_env, {path: '/usr/local/nvm/versions/node/vv16.11.1/bin:$PATH'}
+
 # Default value for linked_dirs is []
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets',
        'node_modules', 'public/packs', 'public/assets'
@@ -23,7 +25,13 @@ set :sidekiq_config, 'config/sidekiq.yml'
 
 set :bugsnag_api_key, Rails.application.credentials.bugsnag_api_key
 
-set :passenger_restart_with_sudo, true
+namespace :deploy do
+  task :restart do
+    on roles(:app) do
+      sudo 'systemctl', 'restart', 'rails-flyweight'
+    end
+  end
+end
 
 namespace :sidekiq do
   task :restart do
@@ -33,4 +41,5 @@ namespace :sidekiq do
   end
 end
 
+after 'deploy:finished', 'deploy:restart'
 after 'deploy:finished', 'sidekiq:restart'

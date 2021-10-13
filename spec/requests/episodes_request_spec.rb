@@ -175,8 +175,8 @@ RSpec.describe '/episodes', type: :request do
   describe '#create' do
     before :each do
       @episode_params         = FactoryBot.attributes_for(:episode)
-      @episode_params[:audio] = fixture_file_upload('./audio.aif', 'audio/aiff')
-      @episode_params[:image] = fixture_file_upload('./image.jpg', 'image/jpeg')
+      @episode_params[:audio] = fixture_file_upload('audio.aif', 'audio/aiff')
+      @episode_params[:image] = fixture_file_upload('image.jpg', 'image/jpeg')
       @auth = login_as_admin
     end
 

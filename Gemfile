@@ -51,7 +51,6 @@ group :development do
   gem 'capistrano-bundler', require: false
   gem 'capistrano-git-with-submodules', require: false
   gem 'capistrano-nvm', require: false
-  gem 'capistrano-passenger', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
