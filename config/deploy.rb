@@ -13,13 +13,13 @@ set :deploy_to, '/var/www/app.avfacts.org'
 
 append :linked_files, 'config/master.key'
 
-set :default_env, {path: '/usr/local/nvm/versions/node/vv16.11.1/bin:$PATH'}
+set :default_env, {path: '/usr/local/nvm/versions/node/v16.13.0/bin:$PATH'}
 
 # Default value for linked_dirs is []
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets',
        'node_modules', 'public/packs', 'public/assets'
 
-set :rvm_ruby_version, "3.0.2@#{fetch :application}"
+set :rvm_ruby_version, "3.0.3@#{fetch :application}"
 
 set :sidekiq_config, 'config/sidekiq.yml'
 

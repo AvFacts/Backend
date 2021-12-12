@@ -6,6 +6,6 @@ class JWTDenylist < ApplicationRecord
             uniqueness: {case_sensitive: false}
 
   def self.prune!
-    where(arel_attribute(:created_at).lt(30.days.ago)).delete_all
+    where(arel_table[:created_at].lt(30.days.ago)).delete_all
   end
 end

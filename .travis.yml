@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-  - 3.0.2
+  - 3.0.3
 services:
   - postgresql
 addons:
@@ -63,8 +63,6 @@ before_script:
   # POSTGRESQL
   - createuser avfacts
   - createdb -O avfacts avfacts_test
-  # SEED
-  - bundle exec rails db:migrate webpacker:compile
 env:
   global:
     - RAILS_TEST_DB_USERNAME=travis
@@ -72,4 +70,4 @@ env:
     - PGPORT=5433
     - PATH="$HOME/bin:$PATH"
 script:
-  - rspec spec
+  - bundle exec rspec spec

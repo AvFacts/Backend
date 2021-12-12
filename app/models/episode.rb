@@ -83,9 +83,9 @@ class Episode < ApplicationRecord
   after_commit :schedule_preprocess
 
   scope :published, -> {
-    where(arel_attribute(:published_at).not_eq(nil).
-        and(arel_attribute(:published_at).lteq(Time.current)).
-        and(arel_attribute(:processed).eq(true)))
+    where(arel_table[:published_at].not_eq(nil).
+        and(arel_table[:published_at].lteq(Time.current)).
+        and(arel_table[:processed].eq(true)))
   }
 
   extend SetNilIfBlank
