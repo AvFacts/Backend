@@ -6,7 +6,7 @@ ruby '3.0.3'
 gem 'bootsnap'
 gem 'configoro'
 gem 'rack-cors'
-gem 'rails', '< 7.0'
+gem 'rails', '< 8.0'
 gem 'sidekiq'
 
 # MODELS
