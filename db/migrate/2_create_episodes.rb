@@ -27,14 +27,35 @@ class CreateEpisodes < ActiveRecord::Migration[6.0]
 
     add_index :episodes, :number, unique: true, name: 'episodes_number_unique'
     add_index :episodes, %i[published_at number], name: 'episodes_index_action'
-    execute "CREATE INDEX episodes_fulltext_search ON episodes USING GIN (fulltext_search)"
 
-    execute <<~SQL
-      CREATE TRIGGER episodes_fulltext_update_trigger
-        BEFORE INSERT OR UPDATE
-          ON episodes
-        FOR EACH ROW EXECUTE PROCEDURE
-          tsvector_update_trigger(fulltext_search, 'pg_catalog.english', title, description, script);
-    SQL
+    reversible do |dir|
+      dir.up do
+        execute <<~SQL.squish
+          CREATE INDEX episodes_fulltext_search
+            ON episodes
+            USING GIN (fulltext_search)
+        SQL
+      end
+
+      dir.down do
+        remove_index :episodes_fulltext_search
+      end
+    end
+
+    reversible do |dir|
+      dir.up do
+        execute <<~SQL.squish
+          CREATE TRIGGER episodes_fulltext_update_trigger
+            BEFORE INSERT OR UPDATE
+              ON episodes
+            FOR EACH ROW EXECUTE PROCEDURE
+              tsvector_update_trigger(fulltext_search, 'pg_catalog.english', title, description, script);
+        SQL
+      end
+
+      dir.down do
+        execute 'DROP TRIGGER episodes_fulltext_update_trigger'
+      end
+    end
   end
 end

@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe EpisodesHelper, type: :helper do
   describe '#channel' do
     it "should load the channel.json file as a struct" do
-      expect(helper.channel.title).to eq("AvFacts - Aviation knowledge without limits")
-      expect(helper.channel.owner.name).to eq("Tim Morgan")
+      expect(helper.channel[:title]).to eq("AvFacts - Aviation knowledge without limits")
+      expect(helper.channel[:owner][:name]).to eq("Tim Morgan")
     end
   end
 

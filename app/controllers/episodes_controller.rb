@@ -188,7 +188,7 @@ class EpisodesController < ApplicationController
   private
 
   def find_episode
-    @episode = Episode.find_by_number!(params[:id])
+    @episode = Episode.find_by!(number: params[:id])
   end
 
   def episode_params

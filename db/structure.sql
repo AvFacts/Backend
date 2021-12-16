@@ -411,6 +411,13 @@ CREATE UNIQUE INDEX index_jwt_denylist_on_jti ON public.jwt_denylist USING btree
 
 
 --
+-- Name: index_users_on_username; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_username ON public.users USING btree (username);
+
+
+--
 -- Name: episodes episodes_fulltext_update_trigger; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -444,6 +451,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('2'),
 ('20201214221630'),
 ('20201214221631'),
+('20211216061829'),
 ('3'),
 ('4');
 

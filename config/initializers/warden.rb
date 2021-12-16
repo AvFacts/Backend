@@ -1,12 +1,12 @@
 module UserRepository
   def self.find_for_jwt_authentication(sub)
-    User.find_by_username!(sub)
+    User.find_by!(username: sub)
   end
 end
 
 module RevocationStrategy
   def self.jwt_revoked?(payload, _user)
-    JWTDenylist.where(jti: payload['jti']).exists?
+    JWTDenylist.exists?(jti: payload['jti'])
   end
 
   def self.revoke_jwt(payload, _user)

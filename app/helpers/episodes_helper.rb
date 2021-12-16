@@ -16,7 +16,7 @@ module EpisodesHelper
   #   information. This data is defined in `channel.json`.
 
   def channel
-    @channel ||= recursive_openstruct(JSON.parse(Rails.root.join('channel', 'channel.json').read))
+    @channel ||= JSON.parse(Rails.root.join('channel', 'channel.json').read).with_indifferent_access
   end
 
   # @return [Time] The date of the most recently-published episode, which serves
@@ -56,8 +56,8 @@ module EpisodesHelper
   def duration_string(seconds)
     seconds = seconds.round
     hours   = (seconds / 3600)
-    minutes = (seconds - hours * 3600) / 60
-    seconds = seconds - hours * 3600 - minutes * 60
+    minutes = (seconds - (hours * 3600)) / 60
+    seconds = seconds - (hours * 3600) - (minutes * 60)
     return [
         hours.to_s,
         minutes.to_s.rjust(2, '0'),
@@ -81,8 +81,6 @@ module EpisodesHelper
         xml.itunes :category, text: categories
       when Array
         categories.each { |c| category_tags xml, c }
-      when OpenStruct
-        category_tags xml, categories.to_h
       when Hash
         categories.each do |parent, subcategories|
           xml.itunes(:category, text: parent) do
@@ -90,18 +88,5 @@ module EpisodesHelper
           end
         end
     end
-  end
-
-  private
-
-  def recursive_openstruct(hsh)
-    OpenStruct.new(hsh.transform_values do |v|
-      case v
-        when Hash
-          recursive_openstruct(v)
-        else
-          v
-      end
-    end)
   end
 end

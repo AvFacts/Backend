@@ -6,31 +6,31 @@ xml.rss('xmlns:itunes' => 'http://www.itunes.com/dtds/podcast-1.0.dtd',
     xml.atom(:link, href: episodes_url(before: @episodes.last.number, format: 'rss'), rel: 'next', type: 'application/rss+xml') unless @last_page
     xml.link frontend_url
 
-    xml.title channel.title
-    xml.description channel.description
-    xml.itunes :summary, channel.summary
-    xml.itunes :subtitle, channel.subtitle
+    xml.title channel[:title]
+    xml.description channel[:description]
+    xml.itunes :summary, channel[:summary]
+    xml.itunes :subtitle, channel[:subtitle]
 
     xml.itunes :owner do
-      xml.itunes :name, channel.owner.name
-      xml.itunes :email, channel.owner.email
+      xml.itunes :name, channel[:owner][:name]
+      xml.itunes :email, channel[:owner][:email]
     end
-    xml.itunes :author, channel.author
+    xml.itunes :author, channel[:author]
 
     xml.pubDate publication_date.rfc822
     xml.lastBuildDate publication_date.rfc822
     xml.ttl 60
 
-    xml.language channel.language
-    xml.copyright channel.copyright
-    xml.webMaster channel.webmaster
-    xml.itunes :explicit, (channel.explicit ? 'yes' : 'no')
-    category_tags(xml, channel.itunes_category)
+    xml.language channel[:language]
+    xml.copyright channel[:copyright]
+    xml.webMaster channel[:webmaster]
+    xml.itunes :explicit, (channel[:explicit] ? 'yes' : 'no')
+    category_tags(xml, channel[:itunes_category])
 
     xml.itunes :image, href: frontend_url('/logo.png')
     xml.image do
       xml.url frontend_url('/logo.png')
-      xml.title channel.title
+      xml.title channel[:title]
       xml.link frontend_url
     end
 
@@ -43,7 +43,7 @@ xml.rss('xmlns:itunes' => 'http://www.itunes.com/dtds/podcast-1.0.dtd',
         xml.title full_title(episode)
         xml.itunes :title, episode.title
         xml.itunes(:subtitle, episode.subtitle) if episode.subtitle?
-        xml.itunes :author, (episode.author || channel.author)
+        xml.itunes :author, (episode.author || channel[:author])
         xml.itunes :summary, (episode.summary || truncate(episode.description, length: 100, omission: "…"))
         xml.description full_description(episode)
 

@@ -6,7 +6,7 @@ RSpec.describe '/episodes', type: :request do
       context '[filtering]' do
         before :each do
           @episodes = Array.new(5) { |i| FactoryBot.create :episode, number: i + 100, processed: true }
-          @episodes.shuffle.each_with_index { |e, i| e.update_attribute :number, i + 1 }
+          @episodes.shuffle.each_with_index { |e, i| e.update number: i + 1 }
 
           # red herrings
           @unpublished = FactoryBot.create(:episode, processed: true, published_at: 1.day.from_now)
@@ -42,7 +42,7 @@ RSpec.describe '/episodes', type: :request do
       context '[pagination]' do
         before :each do
           @episodes = Array.new(15) { |i| FactoryBot.create :episode, number: i + 100, processed: true }
-          @episodes.shuffle.each_with_index { |e, i| e.update_attribute :number, i + 1 }
+          @episodes.shuffle.each_with_index { |e, i| e.update number: i + 1 }
         end
 
         it "should paginate" do
@@ -84,7 +84,7 @@ RSpec.describe '/episodes', type: :request do
     context '[RSS]' do
       before :each do
         @episodes = Array.new(3) { |i| FactoryBot.create :episode, number: i + 100 }
-        @episodes.shuffle.each_with_index { |e, i| e.update_attribute :number, i + 1 }
+        @episodes.shuffle.each_with_index { |e, i| e.update number: i + 1 }
 
         # red herrings
         @unpublished = FactoryBot.create(:episode, processed: true, published_at: 1.day.from_now)
@@ -95,7 +95,7 @@ RSpec.describe '/episodes', type: :request do
 
         @included_episodes = [*@episodes, @blocked]
 
-        @included_episodes.max_by(&:number).update_attribute :credits, "Some\ncredits"
+        @included_episodes.max_by(&:number).update credits: "Some\ncredits"
       end
 
       it "should render the RSS feed" do
