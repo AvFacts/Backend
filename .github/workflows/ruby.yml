@@ -1,0 +1,60 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will download a prebuilt Ruby version, install dependencies and run tests with Rake
+# For more information see: https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
+
+name: Ruby
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13.5
+        env:
+          POSTGRES_USER: avfacts
+          POSTGRES_DB: avfacts_test
+          POSTGRES_PASSWORD: ''
+        ports: ['5432:5432']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0'
+        bundler-cache: true
+    - name: Create test database
+      run: bin/rails db:setup
+    - name: Run tests
+      run: rspec spec
+
+  linters:
+    name: Linters
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0'
+        bundler-cache: true
+    - name: Run Rubocop
+      run: |
+        gem install rubocop-rails rubocop-rspec rubocop-performance
+        curl -O https://gist.githubusercontent.com/RISCfuture/65e21b9e8b0d1db285dcb4fc627b98fa/raw/5ff9d1ee099994f3987146efd50c91f070b29eab/.rubocop.yml
+        rubocop --parallel
+    - name: Run Brakeman
+      run: |
+        #gem install brakeman
+        git clone https://github.com/presidentbeef/brakeman.git
+        pushd brakeman && rake install && popd
+        brakeman -q -w2
