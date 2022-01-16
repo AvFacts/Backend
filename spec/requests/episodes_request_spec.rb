@@ -5,13 +5,13 @@ RSpec.describe '/episodes', type: :request do
     context '[JSON]' do
       context '[filtering]' do
         before :each do
-          @episodes = Array.new(5) { |i| FactoryBot.create :episode, number: i + 100, processed: true }
+          @episodes = Array.new(5) { |i| create :episode, number: i + 100, processed: true }
           @episodes.shuffle.each_with_index { |e, i| e.update number: i + 1 }
 
           # red herrings
-          @unpublished = FactoryBot.create(:episode, processed: true, published_at: 1.day.from_now)
-          @blocked     = FactoryBot.create(:episode, processed: true, blocked: true)
-          @draft       = FactoryBot.create(:episode, audio: nil)
+          @unpublished = create(:episode, processed: true, published_at: 1.day.from_now)
+          @blocked     = create(:episode, processed: true, blocked: true)
+          @draft       = create(:episode, audio: nil)
         end
 
         it "should list episodes in order filtering unpublished episodes" do
@@ -41,7 +41,7 @@ RSpec.describe '/episodes', type: :request do
 
       context '[pagination]' do
         before :each do
-          @episodes = Array.new(15) { |i| FactoryBot.create :episode, number: i + 100, processed: true }
+          @episodes = Array.new(15) { |i| create :episode, number: i + 100, processed: true }
           @episodes.shuffle.each_with_index { |e, i| e.update number: i + 1 }
         end
 
@@ -69,8 +69,8 @@ RSpec.describe '/episodes', type: :request do
 
       context '[searching]' do
         before :each do
-          @included = FactoryBot.create_list(:episode, 3, script: "SearchTerm #{FFaker::HipsterIpsum.sentence}", processed: true)
-          @no_match = FactoryBot.create(:episode, script: FFaker::HipsterIpsum.sentence, processed: true)
+          @included = create_list(:episode, 3, script: "SearchTerm #{FFaker::HipsterIpsum.sentence}", processed: true)
+          @no_match = create(:episode, script: FFaker::HipsterIpsum.sentence, processed: true)
         end
 
         it "should accept a search query" do
@@ -83,13 +83,13 @@ RSpec.describe '/episodes', type: :request do
 
     context '[RSS]' do
       before :each do
-        @episodes = Array.new(3) { |i| FactoryBot.create :episode, number: i + 100 }
+        @episodes = Array.new(3) { |i| create :episode, number: i + 100 }
         @episodes.shuffle.each_with_index { |e, i| e.update number: i + 1 }
 
         # red herrings
-        @unpublished = FactoryBot.create(:episode, processed: true, published_at: 1.day.from_now)
-        @blocked     = FactoryBot.create(:episode, processed: true, blocked: true)
-        @draft       = FactoryBot.create(:episode, audio: nil)
+        @unpublished = create(:episode, processed: true, published_at: 1.day.from_now)
+        @blocked     = create(:episode, processed: true, blocked: true)
+        @draft       = create(:episode, audio: nil)
 
         [*@episodes, @unpublished, @blocked].each(&:preprocess!)
 
@@ -117,12 +117,12 @@ RSpec.describe '/episodes', type: :request do
 
   describe '#show' do
     let(:processed_episode) do
-      episode = FactoryBot.create(:episode, script: "Hello, world!")
+      episode = create(:episode, script: "Hello, world!")
       episode.preprocess!
       episode
     end
-    let(:unprocessed_episode) { FactoryBot.create(:episode) }
-    let(:draft_episode) { FactoryBot.create :episode, audio: nil, image: nil }
+    let(:unprocessed_episode) { create(:episode) }
+    let(:draft_episode) { create :episode, audio: nil, image: nil }
 
     context '[JSON]' do
       it "should render the show template" do
@@ -174,7 +174,7 @@ RSpec.describe '/episodes', type: :request do
 
   describe '#create' do
     before :each do
-      @episode_params         = FactoryBot.attributes_for(:episode)
+      @episode_params         = attributes_for(:episode)
       @episode_params[:audio] = fixture_file_upload('audio.aif', 'audio/aiff')
       @episode_params[:image] = fixture_file_upload('image.jpg', 'image/jpeg')
       @auth = login_as_admin
@@ -200,7 +200,7 @@ RSpec.describe '/episodes', type: :request do
 
   describe '#update' do
     before :each do
-      @episode = FactoryBot.create(:episode)
+      @episode = create(:episode)
       @auth = login_as_admin
     end
 
@@ -223,7 +223,7 @@ RSpec.describe '/episodes', type: :request do
 
   describe '#destroy' do
     before :each do
-      @episode = FactoryBot.create(:episode)
+      @episode = create(:episode)
       @auth = login_as_admin
     end
 

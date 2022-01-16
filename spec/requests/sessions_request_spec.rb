@@ -5,7 +5,7 @@ RSpec.describe '/sessions', type: :request do
   describe '#create' do
     before :each do
       @password = SecureRandom.base58
-      @user     = FactoryBot.create(:user, password: @password)
+      @user     = create(:user, password: @password)
     end
 
     it "should log a user in and return the token" do

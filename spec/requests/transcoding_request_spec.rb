@@ -5,7 +5,7 @@ RSpec.describe 'transcoding', type: :request do
   include Rails.application.routes.url_helpers
   describe '#show' do
     before :each do
-      @episode = FactoryBot.create(:episode)
+      @episode = create(:episode)
     end
 
     it "should redirect to the service URL for a transcoded file" do

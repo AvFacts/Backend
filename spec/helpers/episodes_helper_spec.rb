@@ -10,9 +10,9 @@ RSpec.describe EpisodesHelper, type: :helper do
 
   describe '#publication_date' do
     it "should return the date of the most recently published episode" do
-      FactoryBot.create :episode, processed: true, published_at: 1.day.ago
-      FactoryBot.create :episode, processed: true, published_at: 5.minutes.ago, blocked: true # blocked episodes can be included
-      FactoryBot.create :episode, processed: true, published_at: 2.days.from_now
+      create :episode, processed: true, published_at: 1.day.ago
+      create :episode, processed: true, published_at: 5.minutes.ago, blocked: true # blocked episodes can be included
+      create :episode, processed: true, published_at: 2.days.from_now
 
       expect(helper.publication_date).to be_within(1.second).of(5.minutes.ago)
     end
@@ -20,7 +20,7 @@ RSpec.describe EpisodesHelper, type: :helper do
 
   describe '#full_title' do
     it "should return the number and title" do
-      episode = FactoryBot.create(:episode, number: 2141, title: "A thing")
+      episode = create(:episode, number: 2141, title: "A thing")
       expect(helper.full_title(episode)).to eq("#2,141: A thing")
     end
   end
