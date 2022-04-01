@@ -25,7 +25,7 @@ class AudioAnalyzer < ActiveStorage::Analyzer::VideoAnalyzer
   # @private
   def metadata
     {
-        duration:    duration,
+        duration:,
         codec:       audio_stream['pcm_s16be'],
         sample_rate: audio_stream['sample_rate']&.to_i,
         bit_depth:   audio_stream['bits_per_sample']&.to_i,

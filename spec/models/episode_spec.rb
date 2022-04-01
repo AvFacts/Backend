@@ -79,7 +79,7 @@ RSpec.describe Episode, type: :model do
       episode.reload
       expect(episode.mp3).to be_processed
       expect(episode.aac).to be_processed
-      expect(episode.thumbnail_image.send(:processed?)).to eq(true)
+      expect(episode.thumbnail_image.send(:processed?)).to be(true)
       expect(episode.mp3_size).to be_within(128).of(33_271)
       expect(episode.aac_size).to be_within(128).of(22_128) # different ffmpeg versions on travis/local
     end
@@ -119,7 +119,7 @@ RSpec.describe Episode, type: :model do
       episode = create(:episode)
       expect(episode.mp3).to be_processed
       expect(episode.aac).to be_processed
-      expect(episode.thumbnail_image.send(:processed?)).to eq(true)
+      expect(episode.thumbnail_image.send(:processed?)).to be(true)
     end
   end
 end

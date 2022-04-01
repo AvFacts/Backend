@@ -58,7 +58,7 @@ class Transcode
   #   system.
 
   def service_url(expires_in: ActiveStorage.service_urls_expire_in, disposition: :inline)
-    service.url key, expires_in: expires_in, disposition: disposition, filename: filename, content_type: content_type
+    service.url key, expires_in:, disposition:, filename:, content_type:
   end
 
   # Returns the public, unsigned URL for the transcoded variant, as hosted by
@@ -70,7 +70,7 @@ class Transcode
   #   hosted by the content delivery network.
 
   def public_cdn_url(**options)
-    url = URI.parse(service.send(:public_url, key, filename: filename))
+    url = URI.parse(service.send(:public_url, key, filename:))
     url.host = Rails.application.config.x.cloudfront[:domain] if Rails.application.config.x.cloudfront[:domain]
     return url.to_s
   rescue NotImplementedError
@@ -80,7 +80,7 @@ class Transcode
       url, query = url.split('?')
       defaults   = ApplicationController.renderer.defaults
       klass      = defaults[:https] ? URI::HTTPS : URI::HTTP
-      uri        = klass.build(host: defaults[:http_host], port: defaults[:port], path: url, query: query)
+      uri        = klass.build(host: defaults[:http_host], port: defaults[:port], path: url, query:)
       url        = uri.to_s
     end
     return url
@@ -94,8 +94,8 @@ class Transcode
   #   @yield (chunk) A block to run as new data is streamed.
   #   @yieldparam [String] chunk A sequential chunk of streamed data.
 
-  def download(&block)
-    processed.service.download key, &block
+  def download(&)
+    processed.service.download(key, &)
   end
 
   # @return [String] The MIME type of the transcoded variant.

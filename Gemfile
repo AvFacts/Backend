@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
-ruby '3.0.3'
+ruby '3.1.1'
 
 # FRAMEWORK
 gem 'bootsnap'
 gem 'configoro'
 gem 'rack-cors'
-gem 'rails', '6.1.4.4'
+gem 'rails'
 gem 'sidekiq'
 
 # MODELS

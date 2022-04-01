@@ -57,7 +57,7 @@ CREATE TABLE public.active_storage_blobs (
     content_type character varying,
     metadata text,
     byte_size bigint NOT NULL,
-    checksum character varying NOT NULL,
+    checksum character varying,
     created_at timestamp without time zone NOT NULL,
     service_name character varying NOT NULL
 );
@@ -88,7 +88,7 @@ ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage
 
 CREATE TABLE public.active_storage_variant_records (
     id bigint NOT NULL,
-    blob_id bigint NOT NULL,
+    blob_id integer NOT NULL,
     variation_digest character varying NOT NULL
 );
 
@@ -452,6 +452,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201214221630'),
 ('20201214221631'),
 ('20211216061829'),
+('20220401001401'),
 ('3'),
 ('4');
 
