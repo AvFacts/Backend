@@ -28,7 +28,7 @@ set :bugsnag_api_key, Rails.application.credentials.bugsnag_api_key
 namespace :deploy do
   task :restart do
     on roles(:app) do
-      sudo 'systemctl', 'restart', 'rails-flyweight'
+      sudo 'systemctl', 'restart', 'rails-avfacts'
     end
   end
 end
