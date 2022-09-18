@@ -195,7 +195,7 @@ Rails.application.config.to_prepare do
   require 'active_storage/service/disk_service'
   require 'active_storage/service/s3_service'
 
-  ActiveStorage::Blob.prepend AddTranscodingToActiveStorage
+  ActiveSupport.on_load(:active_storage_blob) { prepend AddTranscodingToActiveStorage }
 
   ActiveStorage::Service.prepend AddStreamingMethodsToService::Base
   ActiveStorage::Service::DiskService.prepend AddStreamingMethodsToService::Disk

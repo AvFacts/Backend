@@ -35,7 +35,7 @@ Warden::Strategies.add(:password) do
 
   def authenticate!
     user = User.find_by(username: params['username'])&.authenticate(params['password'])
-    user == false ? pass : success!(user)
+    (user == false) ? pass : success!(user)
   end
 end
 

@@ -16,7 +16,7 @@ RSpec.describe '/episodes', type: :request do
 
         it "should list episodes in order filtering unpublished episodes" do
           get '/episodes.json'
-          expect(response.status).to eq(200)
+          expect(response).to have_http_status(:ok)
           json = JSON.parse(response.body)
           expect(json.map { |j| j['number'] }).
               to eq(@episodes.map(&:number).sort.reverse)
@@ -100,7 +100,7 @@ RSpec.describe '/episodes', type: :request do
 
       it "should render the RSS feed" do
         get '/episodes.rss'
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
         xml = Nokogiri::XML(response.body)
 
         items = xml.xpath('//rss/channel/item')
@@ -127,7 +127,7 @@ RSpec.describe '/episodes', type: :request do
     context '[JSON]' do
       it "should render the show template" do
         get "/episodes/#{processed_episode.to_param}.json"
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
         expect(json['number']).to eq(processed_episode.number)
         expect(json).not_to include('script')
@@ -153,19 +153,19 @@ RSpec.describe '/episodes', type: :request do
 
         it "should stream" do
           get "/episodes/#{processed_episode.to_param}.#{format}"
-          expect(response.status).to eq(200)
+          expect(response).to have_http_status(:ok)
           expect(response.body).to eq("this is not a very well-formatted audio file")
         end
 
         it "should 404 if the audio hasn't been added yet" do
           get "/episodes/#{draft_episode.to_param}.#{format}"
-          expect(response.status).to eq(404)
+          expect(response).to have_http_status(:not_found)
           expect(response.body).to be_empty
         end
 
         it "should 404 if the audio hasn't been processed yet" do
           get "/episodes/#{unprocessed_episode.to_param}.#{format}"
-          expect(response.status).to eq(404)
+          expect(response).to have_http_status(:not_found)
           expect(response.body).to be_empty
         end
       end
@@ -182,19 +182,19 @@ RSpec.describe '/episodes', type: :request do
 
     it "should require admin" do
       post '/episodes.json', params: {episode: @episode_params}
-      expect(response.status).to eq(401)
+      expect(response).to have_http_status(:unauthorized)
     end
 
     it "should make an episode" do
       post '/episodes.json', params: {episode: @episode_params}, headers: {'Authorization' => @auth}
-      expect(response.status).to eq(201)
+      expect(response).to have_http_status(:created)
       expect(Episode.count).to eq(1)
       expect(Episode.first.title).to eq(@episode_params[:title])
     end
 
     it "should handle validation errors" do
       post '/episodes.json', params: {episode: @episode_params.merge(title: " ")}, headers: {'Authorization' => @auth}
-      expect(response.status).to eq(422)
+      expect(response).to have_http_status(:unprocessable_entity)
     end
   end
 
@@ -206,18 +206,18 @@ RSpec.describe '/episodes', type: :request do
 
     it "should require admin" do
       patch "/episodes/#{@episode.to_param}.json", params: {episode: {title: "New Title"}}
-      expect(response.status).to eq(401)
+      expect(response).to have_http_status(:unauthorized)
     end
 
     it "should update an episode" do
       patch "/episodes/#{@episode.to_param}.json", params: {episode: {title: "New Title"}}, headers: {'Authorization' => @auth}
-      expect(response.status).to eq(200)
+      expect(response).to have_http_status(:ok)
       expect(@episode.reload.title).to eq("New Title")
     end
 
     it "should handle validation errors" do
       patch "/episodes/#{@episode.to_param}.json", params: {episode: {title: " "}}, headers: {'Authorization' => @auth}
-      expect(response.status).to eq(422)
+      expect(response).to have_http_status(:unprocessable_entity)
     end
   end
 
@@ -229,12 +229,12 @@ RSpec.describe '/episodes', type: :request do
 
     it "should require admin" do
       delete "/episodes/#{@episode.to_param}.json"
-      expect(response.status).to eq(401)
+      expect(response).to have_http_status(:unauthorized)
     end
 
     it "should delete an episode" do
       delete "/episodes/#{@episode.to_param}.json", headers: {'Authorization' => @auth}
-      expect(response.status).to eq(204)
+      expect(response).to have_http_status(:no_content)
       expect { @episode.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end

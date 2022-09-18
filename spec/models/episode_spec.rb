@@ -31,7 +31,7 @@ RSpec.describe Episode, type: :model do
   describe '#mp3' do
     it "should return the MP3 Transcode" do
       episode = create(:episode)
-      expect(episode.mp3).to be_kind_of(Transcode)
+      expect(episode.mp3).to be_a(Transcode)
       expect(episode.mp3.blob).to eq(episode.audio.blob)
       expect(episode.mp3.encoding.format).to eq('mp3')
     end
@@ -45,7 +45,7 @@ RSpec.describe Episode, type: :model do
   describe '#aac' do
     it "should return the AAC Transcode" do
       episode = create(:episode)
-      expect(episode.aac).to be_kind_of(Transcode)
+      expect(episode.aac).to be_a(Transcode)
       expect(episode.aac.blob).to eq(episode.audio.blob)
       expect(episode.aac.encoding.format).to eq('aac')
     end
@@ -60,7 +60,7 @@ RSpec.describe Episode, type: :model do
     it "should return the thumbnail image" do
       episode = create(:episode)
       episode.image.analyze
-      expect(episode.thumbnail_image).to be_kind_of(ActiveStorage::VariantWithRecord)
+      expect(episode.thumbnail_image).to be_a(ActiveStorage::VariantWithRecord)
       expect(episode.thumbnail_image.blob).to eq(episode.image.blob)
       expect(episode.thumbnail_image.variation.transformations).
           to eq(format: 'jpeg', resize_to_fill: [200, 200])

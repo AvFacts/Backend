@@ -19,7 +19,7 @@ RSpec.describe 'transcoding', type: :request do
     it "should render a 404 for an unknown blob" do
       blob = ActiveStorage.verifier.generate('hello', purpose: :blob_id)
       get "/rails/active_storage/transcoded/#{blob}/world/foo.txt"
-      expect(response.status).to be(404)
+      expect(response).to have_http_status(:not_found)
     end
   end
 end

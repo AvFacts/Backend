@@ -52,7 +52,7 @@ class ApplicationController < ActionController::API
 
   def set_storage_host
     # really only needed for DiskService in dev/test
-    ActiveStorage::Current.host = request.base_url
+    ActiveStorage::Current.url_options = {protocol: request.protocol, host: request.host, port: request.port}
   end
 
   def add_user_info_to_bugsnag(report)
