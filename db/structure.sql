@@ -88,7 +88,7 @@ ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage
 
 CREATE TABLE public.active_storage_variant_records (
     id bigint NOT NULL,
-    blob_id integer NOT NULL,
+    blob_id bigint NOT NULL,
     variation_digest character varying NOT NULL
 );
 
