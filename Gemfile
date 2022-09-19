@@ -46,6 +46,7 @@ group :development do
   gem 'binding_of_caller'
 
   # DEPLOYMENT
+  gem 'bcrypt_pbkdf', require: false
   gem 'bugsnag-capistrano', require: false
   gem 'capistrano', require: false
   gem 'capistrano-bundler', require: false
@@ -54,6 +55,7 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'ed25519', require: false
 end
 
 group :test do
