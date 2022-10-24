@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Rack application that an endpoint allowing the Cypress front-end to reset the
 # database before each E2E test run. Only mounted in the `cypress` environment.
 
@@ -17,7 +19,7 @@ class ResetCypress
   end
 
   def response
-    [200, {'Content-Type' => 'text/plain'}, ["Cypress reset finished"]]
+    [200, {"Content-Type" => "text/plain"}, ["Cypress reset finished"]]
   end
 
   def models
@@ -29,6 +31,6 @@ class ResetCypress
   end
 
   def create_admin_user
-    User.create! username: 'cypress', password: 'password123'
+    User.create! username: "cypress", password: "password123"
   end
 end

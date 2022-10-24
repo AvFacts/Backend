@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SetNilIfBlank
 
   # @overload set_nil_if_blank(field, ...)

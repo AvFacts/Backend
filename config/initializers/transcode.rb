@@ -1,4 +1,6 @@
-require 'transcode'
+# frozen_string_literal: true
+
+require "transcode"
 
 # Adds the {#transcode} method to `ActiveStorage::Blob` instances.
 
@@ -62,7 +64,7 @@ module AddStreamingMethodsToService
 
     def download_part(key, range)
       range  = range.first..object.content_length if range.last == -1
-      buffer = +''
+      buffer = +""
 
       instrument :streaming_download, key: do
         object = object_for(key)
@@ -91,13 +93,13 @@ module AddStreamingMethodsToService
 
     def download_part(key, range)
       range  = range.first..byte_size(key) if range.last == -1
-      buffer = +''
+      buffer = +""
 
       instrument :streaming_download, key: do
         chunk_size = 1.megabyte
         offset     = range.first
 
-        File.open(path_for(key), 'rb') do |file|
+        File.open(path_for(key), "rb") do |file|
           file.seek(range.first)
           while offset < range.last
             this_chunk_size = (offset + chunk_size >= range.last) ? (range.last - offset + 1) : chunk_size
@@ -126,24 +128,24 @@ module AddRangeQueriesToDiskController
 
   def show
     if (key = decode_verified_key) && (size = disk_service.byte_size(key[:key]))
-      response.headers['Content-Type']        = key[:content_type] || DEFAULT_SEND_FILE_TYPE
-      response.headers['Content-Disposition'] = key[:disposition] || DEFAULT_SEND_FILE_DISPOSITION
-      response.headers['Accept-Ranges']       = 'bytes'
+      response.headers["Content-Type"]        = key[:content_type] || DEFAULT_SEND_FILE_TYPE
+      response.headers["Content-Disposition"] = key[:disposition] || DEFAULT_SEND_FILE_DISPOSITION
+      response.headers["Accept-Ranges"]       = "bytes"
 
-      if (ranges = parse_ranges(request.headers['Range']))
+      if (ranges = parse_ranges(request.headers["Range"]))
         units, (range, *rest) = ranges
-        raise BadRangeError if units != 'bytes' || rest.any?
+        raise BadRangeError if units != "bytes" || rest.any?
 
         raise BadRangeError if range.first.negative? || range.last > size
 
         data = disk_service.download_part(key[:key], range)
 
-        response.headers['Content-Length'] = data.bytesize.to_s
-        response.headers['Content-Range'] = "bytes #{range.first}-#{(range.last == -1) ? size : range.last}/#{size}"
+        response.headers["Content-Length"] = data.bytesize.to_s
+        response.headers["Content-Range"] = "bytes #{range.first}-#{(range.last == -1) ? size : range.last}/#{size}"
         response.status = :partial_content unless data.bytesize == size
 
         if request.head?
-          response.body = ''
+          response.body = ""
         else
           send_data data,
                     disposition:  params[:disposition],
@@ -151,7 +153,7 @@ module AddRangeQueriesToDiskController
         end
       else
         size = disk_service.byte_size(key[:key])
-        response.headers['Content-Length'] = size.to_s
+        response.headers["Content-Length"] = size.to_s
 
         send_data disk_service.download(key[:key]),
                   disposition:  params[:disposition],
@@ -192,8 +194,8 @@ module AddRangeQueriesToDiskController
 end
 
 Rails.application.config.to_prepare do
-  require 'active_storage/service/disk_service'
-  require 'active_storage/service/s3_service'
+  require "active_storage/service/disk_service"
+  require "active_storage/service/s3_service"
 
   ActiveSupport.on_load(:active_storage_blob) { prepend AddTranscodingToActiveStorage }
 

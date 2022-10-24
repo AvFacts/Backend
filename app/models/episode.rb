@@ -1,4 +1,6 @@
-require 'transcode'
+# frozen_string_literal: true
+
+require "transcode"
 
 # An episode of the AvFacts podcast. Each episode is associated with a source
 # audio file, which is managed by Active Storage and transcoded using the
@@ -106,7 +108,7 @@ class Episode < ApplicationRecord
   def mp3
     return nil if audio.attachment.nil?
 
-    audio.transcode 'mp3', MP3_OPTIONS
+    audio.transcode "mp3", MP3_OPTIONS
   end
 
   # @return [Transcode, nil] The AAC version of the `audio` file (processed
@@ -115,7 +117,7 @@ class Episode < ApplicationRecord
   def aac
     return nil if audio.attachment.nil?
 
-    audio.transcode 'aac', AAC_OPTIONS
+    audio.transcode "aac", AAC_OPTIONS
   end
 
   # @return [ActiveStorage::Variant, nil] The thumbnail version of the episode

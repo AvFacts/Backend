@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.call episode, :number, :title, :subtitle, :summary, :author,
           :description, :published_at, :script?
 
@@ -10,8 +12,8 @@ json.image do
   json.preview_url polymorphic_url(episode.thumbnail_image, only_path: false)
 
   if defined?(full) && full
-    json.width episode.image.metadata['width']
-    json.height episode.image.metadata['height']
+    json.width episode.image.metadata["width"]
+    json.height episode.image.metadata["height"]
     json.size episode.image.byte_size
   end
 end if episode.thumbnail_image&.processed?

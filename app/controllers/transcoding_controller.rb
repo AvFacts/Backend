@@ -1,4 +1,6 @@
-require 'base64'
+# frozen_string_literal: true
+
+require "base64"
 
 # Active Storage-like controller that redirects to the URL for a transcoded
 # variant of an audio file.

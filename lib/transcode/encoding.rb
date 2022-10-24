@@ -1,4 +1,6 @@
-require 'transcode'
+# frozen_string_literal: true
+
+require "transcode"
 
 # Represents an encoding format and encoding options used to transcode an audio
 # file from one format to another. This is an analog to the

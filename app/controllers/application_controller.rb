@@ -1,4 +1,6 @@
-require 'application_responder'
+# frozen_string_literal: true
+
+require "application_responder"
 
 # @abstract
 #
@@ -31,7 +33,7 @@ class ApplicationController < ActionController::API
 
   def unauthorized_response
     respond_to do |format|
-      format.json { render json: {error: 'admin_required'}, status: :unauthorized }
+      format.json { render json: {error: "admin_required"}, status: :unauthorized }
       format.any { head :unauthorized }
     end
   end
@@ -45,7 +47,7 @@ class ApplicationController < ActionController::API
   # @return [User, nil] The logged-in user, if any.
 
   def current_user
-    request.env['warden'].user
+    request.env["warden"].user
   end
 
   private
@@ -62,7 +64,7 @@ class ApplicationController < ActionController::API
   end
 
   def authenticate_with_warden
-    request.env['warden'].authenticate
+    request.env["warden"].authenticate
     return true
   end
 end

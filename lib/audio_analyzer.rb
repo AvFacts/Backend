@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # An Active Storage analyzer that adds duration and other audio data to the
 # blob's `metadata` hash.
 #
@@ -26,20 +28,20 @@ class AudioAnalyzer < ActiveStorage::Analyzer::VideoAnalyzer
   def metadata
     {
         duration:,
-        codec:       audio_stream['pcm_s16be'],
-        sample_rate: audio_stream['sample_rate']&.to_i,
-        bit_depth:   audio_stream['bits_per_sample']&.to_i,
-        channels:    audio_stream['channels']&.to_i
+        codec:       audio_stream["pcm_s16be"],
+        sample_rate: audio_stream["sample_rate"]&.to_i,
+        bit_depth:   audio_stream["bits_per_sample"]&.to_i,
+        channels:    audio_stream["channels"]&.to_i
     }.compact
   end
 
   private
 
   def duration
-    Float(audio_stream['duration']) if audio_stream['duration']
+    Float(audio_stream["duration"]) if audio_stream["duration"]
   end
 
   def audio_stream
-    @audio_stream ||= streams.detect { |stream| stream['codec_type'] == 'audio' } || {}
+    @audio_stream ||= streams.detect { |stream| stream["codec_type"] == "audio" } || {}
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Helper methods for the RSS and JSON views of {EpisodesController}.
 
 module EpisodesHelper
@@ -7,7 +9,7 @@ module EpisodesHelper
   # @param [String] path The URI path.
   # @return [String] The full front-end URL.
 
-  def frontend_url(path='/')
+  def frontend_url(path="/")
     URI.join(Rails.application.config.x.urls[:frontend_url], path)
   end
 
@@ -16,7 +18,7 @@ module EpisodesHelper
   #   information. This data is defined in `channel.json`.
 
   def channel
-    @channel ||= JSON.parse(Rails.root.join('channel', 'channel.json').read).with_indifferent_access
+    @channel ||= JSON.parse(Rails.root.join("channel", "channel.json").read).with_indifferent_access
   end
 
   # @return [Time] The date of the most recently-published episode, which serves
@@ -60,9 +62,9 @@ module EpisodesHelper
     seconds = seconds - (hours * 3600) - (minutes * 60)
     return [
         hours.to_s,
-        minutes.to_s.rjust(2, '0'),
-        seconds.to_s.rjust(2, '0')
-    ].join(':')
+        minutes.to_s.rjust(2, "0"),
+        seconds.to_s.rjust(2, "0")
+    ].join(":")
   end
 
   # Constructs nested `<itunes:category>` tags for the given category and

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This job calls {Episode#preprocess!} on the given episode.
 
 class ProcessEpisodeJob < ApplicationJob

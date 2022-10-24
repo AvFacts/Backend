@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateEpisodes < ActiveRecord::Migration[6.0]
   def change
     create_table :episodes do |t|
@@ -25,8 +27,8 @@ class CreateEpisodes < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index :episodes, :number, unique: true, name: 'episodes_number_unique'
-    add_index :episodes, %i[published_at number], name: 'episodes_index_action'
+    add_index :episodes, :number, unique: true, name: "episodes_number_unique"
+    add_index :episodes, %i[published_at number], name: "episodes_index_action"
 
     reversible do |dir|
       dir.up do
@@ -54,7 +56,7 @@ class CreateEpisodes < ActiveRecord::Migration[6.0]
       end
 
       dir.down do
-        execute 'DROP TRIGGER episodes_fulltext_update_trigger'
+        execute "DROP TRIGGER episodes_fulltext_update_trigger"
       end
     end
   end

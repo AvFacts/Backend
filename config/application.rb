@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "boot"
 
 require "rails"
@@ -43,14 +45,14 @@ module Avfacts
       g.template_engine     nil
       g.test_framework      :rspec, fixture: true, views: false
       g.integration_tool    :rspec
-      g.fixture_replacement :factory_bot, dir: 'spec/factories'
+      g.fixture_replacement :factory_bot, dir: "spec/factories"
     end
 
     config.active_job.queue_name_prefix = "avfacts_#{Rails.env}"
 
     config.active_record.schema_format = :sql
 
-    require 'audio_analyzer'
+    require "audio_analyzer"
     config.active_storage.analyzers.append AudioAnalyzer
 
     config.x.cloudfront = config_for(:cloudfront)
@@ -59,6 +61,6 @@ module Avfacts
 end
 
 if Rails.env.production?
-  FFMPEG.ffmpeg_binary  = '/var/www/app.avfacts.org/shared/bin/ffmpeg'
-  FFMPEG.ffprobe_binary = '/var/www/app.avfacts.org/shared/bin/ffprobe'
+  FFMPEG.ffmpeg_binary  = "/var/www/app.avfacts.org/shared/bin/ffmpeg"
+  FFMPEG.ffprobe_binary = "/var/www/app.avfacts.org/shared/bin/ffprobe"
 end

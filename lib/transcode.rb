@@ -1,4 +1,6 @@
-require 'tempfile'
+# frozen_string_literal: true
+
+require "tempfile"
 
 # Represents an on-demand transcoded variant of an Active Storage audio file.
 # A Transcode instance stores an `ActiveStorage::Blob` and a
@@ -76,8 +78,8 @@ class Transcode
   rescue NotImplementedError
     # convert the path into a URL, if it's a path
     url = service_url(**options)
-    if url.start_with?('/')
-      url, query = url.split('?')
+    if url.start_with?("/")
+      url, query = url.split("?")
       defaults   = ApplicationController.renderer.defaults
       klass      = defaults[:https] ? URI::HTTPS : URI::HTTP
       uri        = klass.build(host: defaults[:http_host], port: defaults[:port], path: url, query:)
@@ -126,11 +128,11 @@ class Transcode
   end
 
   def transcode(io)
-    in_tempfile = Tempfile.new("avfacts_blob_#{blob.id}_in", encoding: 'ascii-8bit')
+    in_tempfile = Tempfile.new("avfacts_blob_#{blob.id}_in", encoding: "ascii-8bit")
     in_tempfile.write io
     in_tempfile.flush
 
-    out_tempfile = Tempfile.new(["avfacts_blob_#{blob.id}_out", encoding.extension], encoding: 'ascii-8bit')
+    out_tempfile = Tempfile.new(["avfacts_blob_#{blob.id}_out", encoding.extension], encoding: "ascii-8bit")
 
     movie = FFMPEG::Movie.new(in_tempfile.path)
     movie.transcode(out_tempfile.path, encoding.options)
@@ -141,4 +143,4 @@ class Transcode
   end
 end
 
-require 'transcode/encoding'
+require "transcode/encoding"

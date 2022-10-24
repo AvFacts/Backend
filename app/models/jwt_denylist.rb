@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class JWTDenylist < ApplicationRecord
-  self.table_name = 'jwt_denylist'
+  self.table_name = "jwt_denylist"
 
   validates :jti,
             presence:   true,

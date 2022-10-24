@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # RESTful controller for working with {Episode Episodes}. This controller
 # handles both JSON requests from the front-end, the RSS format for podcast
 # readers, and requests for podcast MP3 files.
@@ -47,24 +49,24 @@ class EpisodesController < ApplicationController
     @episodes = admin? ? Episode.all : Episode.published
 
     @episodes = @episodes.where(blocked: false) if request.format.json? && !admin?
-    @episodes = @episodes.where('number < ?', params[:before]) if params[:before].present?
+    @episodes = @episodes.where("number < ?", params[:before]) if params[:before].present?
 
     if params[:filter].present?
       @episodes = @episodes.
-          select('*, ts_rank_cd(fulltext_search, query) AS search_rank').
+          select("*, ts_rank_cd(fulltext_search, query) AS search_rank").
           from("#{Episode.quoted_table_name}, plainto_tsquery(#{Episode.connection.quote params[:filter]}) query").
-          where('fulltext_search @@ query')
+          where("fulltext_search @@ query")
     end
 
     @episodes = if params[:filter].present?
-                  @episodes.order('search_rank DESC')
+                  @episodes.order("search_rank DESC")
                 else
                   @episodes.order(number: :desc)
                 end
 
     @episodes = @episodes.with_attached_audio.with_attached_image
     @episodes = case request.format
-                  when 'json'
+                  when "json"
                     @episodes.limit(10)
                   else
                     @episodes.limit(50)
@@ -72,7 +74,7 @@ class EpisodesController < ApplicationController
 
     if params[:filter].blank?
       @last_page = @episodes.empty? || @episodes.pluck(:number).include?(Episode.minimum(:number))
-      response.headers['X-Next-Page'] = episodes_path(before: @episodes.last.number, filter: params[:filter].presence, format: params[:format]) unless @last_page
+      response.headers["X-Next-Page"] = episodes_path(before: @episodes.last.number, filter: params[:filter].presence, format: params[:format]) unless @last_page
     end
 
     respond_with :episodes do |format|
@@ -109,13 +111,13 @@ class EpisodesController < ApplicationController
     respond_with @episode do |format|
       format.mp3 do
         # redirect_to @episode.mp3.public_cdn_url
-        response.headers['Content-Type'] = @episode.mp3.content_type
+        response.headers["Content-Type"] = @episode.mp3.content_type
         stream @episode.mp3.public_cdn_url
       end
 
       format.m4a do
         # redirect_to @episode.aac.public_cdn_url
-        response.headers['Content-Type'] = @episode.aac.content_type
+        response.headers["Content-Type"] = @episode.aac.content_type
         stream @episode.aac.public_cdn_url
       end
     end

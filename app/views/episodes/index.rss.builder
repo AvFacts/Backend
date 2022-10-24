@@ -1,9 +1,11 @@
-xml.rss('xmlns:itunes' => 'http://www.itunes.com/dtds/podcast-1.0.dtd',
-        'xmlns:atom'   => 'http://www.w3.org/2005/Atom',
-        version:       '2.0') do
+# frozen_string_literal: true
+
+xml.rss("xmlns:itunes" => "http://www.itunes.com/dtds/podcast-1.0.dtd",
+        "xmlns:atom"   => "http://www.w3.org/2005/Atom",
+        version:       "2.0") do
   xml.channel do
-    xml.atom :link, href: episodes_url(format: 'rss'), rel: 'self', type: 'application/rss+xml'
-    xml.atom(:link, href: episodes_url(before: @episodes.last.number, format: 'rss'), rel: 'next', type: 'application/rss+xml') unless @last_page
+    xml.atom :link, href: episodes_url(format: "rss"), rel: "self", type: "application/rss+xml"
+    xml.atom(:link, href: episodes_url(before: @episodes.last.number, format: "rss"), rel: "next", type: "application/rss+xml") unless @last_page
     xml.link frontend_url
 
     xml.title channel[:title]
@@ -24,12 +26,12 @@ xml.rss('xmlns:itunes' => 'http://www.itunes.com/dtds/podcast-1.0.dtd',
     xml.language channel[:language]
     xml.copyright channel[:copyright]
     xml.webMaster channel[:webmaster]
-    xml.itunes :explicit, (channel[:explicit] ? 'yes' : 'no')
+    xml.itunes :explicit, (channel[:explicit] ? "yes" : "no")
     category_tags(xml, channel[:itunes_category])
 
-    xml.itunes :image, href: frontend_url('/logo.png')
+    xml.itunes :image, href: frontend_url("/logo.png")
     xml.image do
-      xml.url frontend_url('/logo.png')
+      xml.url frontend_url("/logo.png")
       xml.title channel[:title]
       xml.link frontend_url
     end
@@ -54,8 +56,8 @@ xml.rss('xmlns:itunes' => 'http://www.itunes.com/dtds/podcast-1.0.dtd',
         xml.itunes(:duration, duration_string(episode.audio.metadata[:duration])) if episode.audio.metadata[:duration]
 
         xml.itunes :order, episode.number
-        xml.itunes :explicit, (episode.explicit? ? 'yes' : 'no')
-        xml.itunes :block, (episode.blocked? ? 'yes' : 'no')
+        xml.itunes :explicit, (episode.explicit? ? "yes" : "no")
+        xml.itunes :block, (episode.blocked? ? "yes" : "no")
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Controller mixin that allows you to stream data from an outbound, server-side
 # HTTP request. To use, `include` this module in your controller. In your
 # action, call the {#stream} method. The outbound server-side request will have
@@ -25,7 +27,7 @@ module Streaming
 
   def stream(url)
     uri = URI.parse(url)
-    Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+    Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") do |http|
       request_class = request.head? ? Net::HTTP::Head : Net::HTTP::Get
 
       outbound_request = request_class.new(uri.request_uri)

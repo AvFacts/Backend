@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Base responder behavior for all controllers in the application. Standard Rails
 # responder behavior, except that for successful create or update actions in
 # JSON format, renders the created object as the JSON response. Create response
@@ -11,7 +13,7 @@ class ApplicationResponder < ActionController::Responder
   def api_behavior
     if format == :json
       if post? || put? || patch?
-        render 'show', status: (post? ? :created : :ok)
+        render "show", status: (post? ? :created : :ok)
       else
         super
       end

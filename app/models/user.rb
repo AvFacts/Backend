@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # A User is an admin user who has the capability to upload, edit, and delete
 # episodes. Users are identified by username and authenticated by password,
 # which is stored in a hashed form.
