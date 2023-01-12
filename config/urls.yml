@@ -1,11 +1,11 @@
 development:
-  http_host: "localhost:5000"
+  http_host: "127.0.0.1:5000"
   https: false
-  frontend_url: "http://localhost:5100"
+  frontend_url: "http://127.0.0.1:5173"
 cypress:
-  http_host: "localhost:5000"
+  http_host: "127.0.0.1:5000"
   https: false
-  frontend_url: "http://localhost:5100"
+  frontend_url: "http://127.0.0.1:5173"
 test:
   http_host: app.test.host
   https: false
