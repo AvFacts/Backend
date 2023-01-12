@@ -43,7 +43,7 @@ end
 
 Rails.application.config.middleware.use Warden::Manager do |config|
   config.failure_app = ->(_) do
-    return [401, {}, ["Authorization Required"]]
+    return [401, {}, ['{"error":"Authorization Required"}']]
   end
   config.default_scope = :user
 
