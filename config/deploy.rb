@@ -21,7 +21,7 @@ set :default_env, {path: "/usr/local/nvm/versions/node/v16.13.0/bin:$PATH"}
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets",
        "node_modules", "public/packs", "public/assets"
 
-set :rvm_ruby_version, "3.1.3@#{fetch :application}"
+set :rvm_ruby_version, "3.2.1@#{fetch :application}"
 
 set :sidekiq_config, "config/sidekiq.yml"
 
