@@ -19,24 +19,21 @@ RSpec.describe "/episodes" do
         it "lists episodes in order filtering unpublished episodes" do
           get "/episodes.json"
           expect(response).to have_http_status(:ok)
-          json = JSON.parse(response.body)
-          expect(json.pluck("number")).
+          expect(response.parsed_body.pluck("number")).
               to eq(@episodes.map(&:number).sort.reverse)
         end
 
         it "does not withhold blocked episodes for JSON requests from admins" do
           auth = login_as_admin
           get "/episodes.json", headers: {"Authorization" => auth}
-          json = JSON.parse(response.body)
-          expect(json.pluck("number")).
+          expect(response.parsed_body.pluck("number")).
               to include(@blocked.number)
         end
 
         it "does not withhold unpublished episodes for JSON requests from admins" do
           auth = login_as_admin
           get "/episodes.json", headers: {"Authorization" => auth}
-          json = JSON.parse(response.body)
-          expect(json.pluck("number")).
+          expect(response.parsed_body.pluck("number")).
               to include(@unpublished.number, @draft.number)
         end
       end
@@ -50,21 +47,18 @@ RSpec.describe "/episodes" do
         it "paginates" do
           get "/episodes.json"
           expect(response.headers["X-Next-Page"]).to eq("/episodes.json?before=6")
-          json = JSON.parse(response.body)
-          expect(json.pluck("number")).
+          expect(response.parsed_body.pluck("number")).
               to eq(@episodes.map(&:number).sort.reverse[0, 10])
 
           get "/episodes.json?before=6"
           expect(response.headers["X-Next-Page"]).to be_nil
-          json = JSON.parse(response.body)
-          expect(json.pluck("number")).
+          expect(response.parsed_body.pluck("number")).
               to eq(@episodes.map(&:number).sort.reverse[10, 10])
         end
 
         it "accepts a 'before' parameter" do
           get "/episodes.json?before=3"
-          json = JSON.parse(response.body)
-          expect(json.pluck("number")).
+          expect(response.parsed_body.pluck("number")).
               to eq(@episodes.map(&:number).sort.reverse[-2..])
         end
       end
@@ -77,7 +71,7 @@ RSpec.describe "/episodes" do
 
         it "accepts a search query" do
           get "/episodes.json?filter=SearchTerm"
-          json = JSON.parse(response.body).pluck("number")
+          json = response.parsed_body.pluck("number")
           expect(json).to match_array(@included.map(&:number))
         end
       end
@@ -130,9 +124,8 @@ RSpec.describe "/episodes" do
       it "renders the show template" do
         get "/episodes/#{processed_episode.to_param}.json"
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json["number"]).to eq(processed_episode.number)
-        expect(json).not_to include("script")
+        expect(response.parsed_body["number"]).to eq(processed_episode.number)
+        expect(response.parsed_body).not_to include("script")
       end
 
       context "[logged in]" do
@@ -140,8 +133,7 @@ RSpec.describe "/episodes" do
 
         it "includes the script" do
           get "/episodes/#{processed_episode.to_param}.json", headers: {"Authorization" => @auth}
-          json = JSON.parse(response.body)
-          expect(json["script"]).to eq("Hello, world!")
+          expect(response.parsed_body["script"]).to eq("Hello, world!")
         end
       end
     end

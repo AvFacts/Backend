@@ -8,7 +8,7 @@ ruby "3.2.1"
 gem "bootsnap"
 gem "configoro"
 gem "rack-cors"
-gem "rails"
+gem "rails", "~>7"
 gem "sidekiq"
 
 # MODELS
