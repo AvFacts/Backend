@@ -18,7 +18,7 @@ A pre-release version of Rails 5.2 is used to take advantage of Active Storage,
 which handles file uploading and storage. FFMPEG is used to perform the
 transcoding, and MiniMagick to perform image processing.
 
-AvFacts uses PostgreSQL 10 as its database (including fulltext search). In
+AvFacts uses PostgreSQL as its database (including fulltext search). In
 production, offline jobs are handled by Sidekiq and caching by Redis. Node.js
 is used to compile and serve the JavaScript-based front-end.
 
