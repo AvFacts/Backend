@@ -20,9 +20,7 @@
 class AudioAnalyzer < ActiveStorage::Analyzer::VideoAnalyzer
 
   # @private
-  def self.accept?(blob)
-    blob.audio?
-  end
+  def self.accept?(blob) = blob.audio?
 
   # @private
   def metadata
@@ -42,6 +40,6 @@ class AudioAnalyzer < ActiveStorage::Analyzer::VideoAnalyzer
   end
 
   def audio_stream
-    @audio_stream ||= streams.detect { |stream| stream["codec_type"] == "audio" } || {}
+    @audio_stream ||= streams.detect { _1["codec_type"] == "audio" } || {}
   end
 end

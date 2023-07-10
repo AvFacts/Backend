@@ -53,21 +53,15 @@ class Transcode::Encoding
   # @return [String] The coded key to use in URLs when describing this transcode
   #   operation.
 
-  def key
-    self.class.encode format, options
-  end
+  def key = self.class.encode format, options
 
   # @return [String] The file extension to use for transcoded files, including
   #   the leading period.
 
-  def extension
-    ".#{format}"
-  end
+  def extension = ".#{format}"
 
   # @return [Mime::Type] The MIME type instance associated with the transcoded
   #   file format.
 
-  def mime_type
-    Mime::Type.lookup_by_extension(format)
-  end
+  def mime_type = Mime::Type.lookup_by_extension(format)
 end

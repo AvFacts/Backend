@@ -9,7 +9,5 @@ class ProcessEpisodeJob < ApplicationJob
   #
   # @param [Episode] episode An episode to preprocess.
 
-  def perform(episode)
-    episode.preprocess! include_delay: true
-  end
+  def perform(episode) = episode.preprocess! include_delay: true
 end

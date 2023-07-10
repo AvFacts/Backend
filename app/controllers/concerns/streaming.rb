@@ -41,7 +41,7 @@ module Streaming
           response.headers[header] = outbound_response[header] if outbound_response[header].present?
         end
 
-        outbound_response.read_body { |chunk| response.stream.write chunk }
+        outbound_response.read_body { response.stream.write _1 }
       end
     end
   ensure

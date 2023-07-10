@@ -100,8 +100,8 @@ RSpec.describe "/episodes" do
         xml = Nokogiri::XML(response.body)
 
         items = xml.xpath("//rss/channel/item")
-        expect(items.map { |i| i.xpath("title").first.content }).
-            to eq(@included_episodes.sort_by(&:number).reverse.map { |e| "##{e.number}: #{e.title}" })
+        expect(items.map { _1.xpath("title").first.content }).
+            to eq(@included_episodes.sort_by(&:number).reverse.map { "##{_1.number}: #{_1.title}" })
         expect(items.first.xpath("description").first.content).to end_with(<<~EOS.chomp)
 
           Some

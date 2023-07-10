@@ -8,29 +8,37 @@ class ResetCypress
   # @private
   def call(_env)
     reset
-    create_admin_user
+    create_fixtures
     return response
   end
 
   private
 
-  def reset
-    models.each { |model| truncate model }
-  end
+  def reset = models.each { truncate _1 }
 
-  def response
-    [200, {"Content-Type" => "text/plain"}, ["Cypress reset finished"]]
-  end
+  def response = [200, {"Content-Type" => "text/plain"}, ["Cypress reset finished"]]
 
-  def models
-    [ActiveStorage::Blob, ActiveStorage::Attachment, User, Episode]
-  end
+  def models = [ActiveStorage::Blob, ActiveStorage::Attachment, User, Episode]
 
   def truncate(model)
     model.connection.execute "TRUNCATE #{model.quoted_table_name} CASCADE"
   end
 
-  def create_admin_user
+  def create_fixtures
     User.create! username: "cypress", password: "password123"
+
+    Episode.create! title:       "Unpublished episode",
+                    description: "Episode 2 description",
+                    script:      "Episode 2 script"
+
+    episode = Episode.new(title:        "Published episode",
+                          description:  "Episode 1 description",
+                          published_at: Time.current)
+    episode.audio.attach io:       Rails.root.join("spec", "fixtures", "files", "audio.aif").open,
+                         filename: "audio.aif"
+    episode.image.attach io:       Rails.root.join("spec", "fixtures", "files", "image.jpg").open,
+                         filename: "image.jpg"
+    episode.save!
+    episode.preprocess!
   end
 end

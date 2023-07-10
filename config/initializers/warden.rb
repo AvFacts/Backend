@@ -31,9 +31,7 @@ Warden::JWTAuth.configure do |config|
 end
 
 Warden::Strategies.add(:password) do
-  def valid?
-    params["username"] || params["password"]
-  end
+  def valid? = params["username"] || params["password"]
 
   def authenticate!
     user = User.find_by(username: params["username"])&.authenticate(params["password"])

@@ -22,9 +22,7 @@ module AddTranscodingToActiveStorage
   #     (such as `{audio_channels: 1}`).
   #   @return [Transcode] The transcoded variant (processed on-demand.)
 
-  def transcode(*args)
-    Transcode.new(self, Transcode::Encoding.new(*args))
-  end
+  def transcode(*) = Transcode.new(self, Transcode::Encoding.new(*))
 end
 
 # Adds the `byte_size` methods to the Disk and S3 services for Active Storage.
@@ -35,9 +33,7 @@ module AddStreamingMethodsToService
 
     # @return [Integer] The size of the blob, in bytes.
 
-    def byte_size
-      raise NotImplementedError
-    end
+    def byte_size = raise NotImplementedError
 
     # @overload download_part(key, range)
     #   Returns the range of the data stored at the given location.
@@ -52,15 +48,11 @@ module AddStreamingMethodsToService
     #   @yieldparam [String] chunk A sequential chunk of data. Guaranteed not to
     #     extend before the start of, or after the end of, the given range.
 
-    def download_part(_key, _range)
-      raise NotImplementedError
-    end
+    def download_part(_key, _range) = raise NotImplementedError
   end
 
   module S3
-    def byte_size(key)
-      object_for(key)&.content_length
-    end
+    def byte_size(key) = object_for(key)&.content_length
 
     def download_part(key, range)
       range  = range.first..object.content_length if range.last == -1

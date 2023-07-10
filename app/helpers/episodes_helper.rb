@@ -36,9 +36,7 @@ module EpisodesHelper
   # @param [Episode] episode The episode.
   # @return [String] The full episode title as used in the feed.
 
-  def full_title(episode)
-    "##{number_with_delimiter episode.number}: #{episode.title}"
-  end
+  def full_title(episode) = "##{number_with_delimiter episode.number}: #{episode.title}"
 
   # @param [Episode] episode The episode.
   # @return [String] The description with the credits appended.
@@ -82,7 +80,7 @@ module EpisodesHelper
       when String
         xml.itunes :category, text: categories
       when Array
-        categories.each { |c| category_tags xml, c }
+        categories.each { category_tags xml, _1 }
       when Hash
         categories.each do |parent, subcategories|
           xml.itunes(:category, text: parent) do

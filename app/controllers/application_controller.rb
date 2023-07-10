@@ -40,15 +40,11 @@ class ApplicationController < ActionController::API
 
   # @return [true, false] Whether or not an authenticated session is present.
 
-  def admin?
-    current_user.present?
-  end
+  def admin? = current_user.present?
 
   # @return [User, nil] The logged-in user, if any.
 
-  def current_user
-    request.env["warden"].user
-  end
+  def current_user = request.env["warden"].user
 
   private
 

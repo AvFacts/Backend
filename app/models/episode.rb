@@ -71,9 +71,6 @@ class Episode < ApplicationRecord
   validates :credits,
             length:    {maximum: 1000},
             allow_nil: true
-  validates :published_at,
-            timeliness: {type: :datetime},
-            allow_nil:  true
   # validates :audio,
   #           attached:     true,
   #           content_type: {in: /^audio\/.*$/}
@@ -201,9 +198,7 @@ class Episode < ApplicationRecord
         mp3.processed? && aac.processed? && thumbnail_image&.processed?
   end
 
-  def schedule_preprocess
-    ProcessEpisodeJob.perform_later(self)
-  end
+  def schedule_preprocess = ProcessEpisodeJob.perform_later(self)
 
   def set_number
     self.number ||= (self.class.maximum(:number) || 0) + 1

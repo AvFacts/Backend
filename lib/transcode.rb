@@ -29,10 +29,10 @@ class Transcode
   delegate :service, to: :blob
 
   # @private
-  def initialize(blob, *encoding_or_encoding_key)
+  def initialize(blob, *)
     blob.kind_of?(ActiveStorage::Blob) or raise ArgumentError, "expected ActiveStorage::Blob, got #{blob.class}"
     @blob = blob
-    @encoding = Encoding.wrap(*encoding_or_encoding_key)
+    @encoding = Encoding.wrap(*)
   end
 
   # Runs the transcode operation and returns this instance.
@@ -46,15 +46,11 @@ class Transcode
 
   # @return [String] A unique key to use in URLs for this variant.
 
-  def key
-    "transcoded/#{blob.key}/#{Digest::SHA256.hexdigest encoding.key}"
-  end
+  def key = "transcoded/#{blob.key}/#{Digest::SHA256.hexdigest encoding.key}"
 
   # @return [String] The file name to use for this transcoded variant.
 
-  def filename
-    ActiveStorage::Filename.new(blob.filename.base + encoding.extension)
-  end
+  def filename = ActiveStorage::Filename.new(blob.filename.base + encoding.extension)
 
   # @return [String] The URL to the transcoded variant within the storage
   #   system.
@@ -71,13 +67,13 @@ class Transcode
   # @return [String] The public, unsigned URL for the transcoded variant as
   #   hosted by the content delivery network.
 
-  def public_cdn_url(**options)
+  def public_cdn_url(**)
     url = URI.parse(service.send(:public_url, key, filename:))
     url.host = Rails.application.config.x.cloudfront[:domain] if Rails.application.config.x.cloudfront[:domain]
     return url.to_s
   rescue NotImplementedError
     # convert the path into a URL, if it's a path
-    url = service_url(**options)
+    url = service_url(**)
     if url.start_with?("/")
       url, query = url.split("?")
       defaults   = ApplicationController.renderer.defaults
@@ -96,28 +92,20 @@ class Transcode
   #   @yield (chunk) A block to run as new data is streamed.
   #   @yieldparam [String] chunk A sequential chunk of streamed data.
 
-  def download(&)
-    processed.service.download(key, &)
-  end
+  def download(&) = processed.service.download(key, &)
 
   # @return [String] The MIME type of the transcoded variant.
 
-  def content_type
-    encoding.mime_type.to_s
-  end
+  def content_type = encoding.mime_type.to_s
 
   # @return [Integer] The size of the transcoded variant, in bytes.
 
-  def byte_size
-    processed.service.byte_size key
-  end
+  def byte_size = processed.service.byte_size key
 
   # @return [true, false] If this instance has been processed yet.
   # @see #processed
 
-  def processed?
-    service.exist?(key)
-  end
+  def processed? = service.exist?(key)
 
   private
 

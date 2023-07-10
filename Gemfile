@@ -18,7 +18,6 @@ gem "image_processing"
 gem "mini_magick"
 gem "pg"
 gem "streamio-ffmpeg"
-gem "validates_timeliness"
 
 # CONTROLLERS
 gem "responders"
