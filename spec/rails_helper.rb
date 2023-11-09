@@ -34,6 +34,7 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 RSpec.configure do |config|
   config.include ActionDispatch::TestProcess::FixtureFile
+  config.include ActiveSupport::Testing::TimeHelpers
   config.include FactoryBot::Syntax::Methods
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -76,10 +77,7 @@ RSpec.configure do |config|
     DatabaseCleaner.cleaning { example.run }
   end
 
-  # TimeCop
-  config.around :each do |example|
-    Timecop.freeze(Time.current) { example.run }
-  end
+  config.before(:each) { freeze_time }
 
   # FakeFS
   # config.around :each do |example|
